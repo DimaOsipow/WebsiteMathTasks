@@ -1,0 +1,33 @@
+﻿@model WebsiteMathTasks.Models.Task
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Title</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>Сondition</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Сondition)
+        </dd>
+        <dt>Theme</dt>
+        <dd>
+            @Html.DisplayFor(model => model.theme)
+        </dd>
+        <dt>Tag</dt>
+        <dd>
+            @Html.DisplayFor(model => model.tag)
+        </dd>
+    </dl>
+
+    <div>
+        <form asp-controller="Home" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Delete" />
+            </div>
+        </form>
+    </div>
+</div>
