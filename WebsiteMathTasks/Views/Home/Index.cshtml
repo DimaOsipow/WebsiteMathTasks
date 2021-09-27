@@ -1,8 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<WebsiteMathTasks.Models.Task>
+@{
+    ViewBag.Title = "All tasks";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<a asp-action="Create">add task</a>
+<table class="table">
+    <tr><td>Title</td><td>Сondition</td><td>Theme</td><td>Tag</td></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">Open</a> |
+                    <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">Create</a> |
+                    <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+</table>

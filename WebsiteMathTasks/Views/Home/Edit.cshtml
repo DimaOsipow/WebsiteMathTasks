@@ -1,0 +1,25 @@
+﻿@model WebsiteMathTasks.Models.Task
+@{
+    ViewBag.Title = "Create";
+}
+<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">title</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Сondition" class="control-label">Сondition</label>
+        <input type="text" asp-for="Сondition" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="theme" class="control-label">Theme</label>
+        <input type="text" asp-for="theme" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tag" class="control-label">Tag</label>
+        <input type="text" asp-for="tag" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="submit" class="btn btn-default" />
+    </div>
+</form>
