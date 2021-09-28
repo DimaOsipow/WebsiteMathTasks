@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,9 +22,42 @@ namespace WebsiteMathTasks.Controllers
         {
             _context = context;
         }
-        public async Task <IActionResult> Index()
+        public async Task <IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.Tasks.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+            ViewData["ConditionSortParm"] = sortOrder == "Сondition" ? "Сondition_desc" : "Сondition";
+            ViewData["ThemeSortParm"] = sortOrder == "theme" ? "theme_desc" : "theme";
+            ViewData["CurrentFilter"] = searchString;
+            var tasks = from s in _context.Tasks
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tasks = tasks.Where(s => s.Name.Contains(searchString)
+                                       || s.Сondition.Contains(searchString)
+                                       || s.theme.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    tasks = tasks.OrderBy(s => s.Name);
+                    break;
+                case "Сondition":
+                    tasks = tasks.OrderBy(s => s.Сondition);
+                    break;
+                case "Сondition_desc":
+                    tasks = tasks.OrderByDescending(s => s.Сondition);
+                    break;
+                case "theme":
+                    tasks = tasks.OrderBy(s => s.theme);
+                    break;
+                case "theme_desc":
+                    tasks = tasks.OrderByDescending(s => s.theme);
+                    break;
+                default:
+                    tasks = tasks.OrderByDescending(s => s.Name);
+                    break;
+            }
+            return View(await tasks.AsNoTracking().ToListAsync());
         }
         public IActionResult Create()
         {
