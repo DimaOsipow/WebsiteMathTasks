@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebsiteMathTasks.Models
 {
-    public class Task
-    {
+    public class Task 
+    {   
         public int Id { get; set; }
+
+        public string UserName { get; set; }
 
         public string Name { get; set; }
 
@@ -19,5 +23,6 @@ namespace WebsiteMathTasks.Models
 
         public string img { get; set; }
 
+        public string Name2 { get; set; }
     }
 }

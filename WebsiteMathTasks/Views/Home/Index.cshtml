@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "All tasks";
 }
-<a asp-action="Create">add task</a>
+@*<a asp-action="Create">add task</a>*@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -13,7 +13,7 @@
     </div>
 </form>
 <table class="table">
-    <thead>
+    @*<thead>
         <tr>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
@@ -26,27 +26,30 @@
             </th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
+    </thead>*@
+    
         @foreach (var item in Model)
         {
+            @*@if (item.UserName == User.Identity.Name)*@
+            
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Сondition)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.theme)
-                </td>
+                </td>*@
                 
                 <td>
                     <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">Open</a> |
-                    <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">Create</a> |
-                    <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">Delete</a>
+                    @*<a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">Create</a> |
+                    <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">Delete</a>*@
                 </td>
             </tr>
+
+            
         }
-        
 </table>

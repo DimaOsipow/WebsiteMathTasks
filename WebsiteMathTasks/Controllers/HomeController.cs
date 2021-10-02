@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebsiteMathTasks.Data;
 using WebsiteMathTasks.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 
 namespace WebsiteMathTasks.Controllers
@@ -22,7 +23,7 @@ namespace WebsiteMathTasks.Controllers
         {
             _context = context;
         }
-        public async Task <IActionResult> Index(string sortOrder, string searchString)
+        public async Task <IActionResult> Acc(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
             ViewData["ConditionSortParm"] = sortOrder == "Сondition" ? "Сondition_desc" : "Сondition";
@@ -67,9 +68,17 @@ namespace WebsiteMathTasks.Controllers
         public async Task<IActionResult> Create(Models.Task task)
         {
             _context.Tasks.Add(task);
+            task.UserName = User.Identity.Name;
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Acc");
         }
+        //public async Task<IActionResult> CreateTask (Models.Task task)
+        //{
+        //    _context.Tasks.Add(task);
+        //    task.UserName = User.Identity.Name;
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction("Index");
+        //}
         public async Task<IActionResult> Details(int? id)
         {
             if (id != null)
@@ -95,7 +104,7 @@ namespace WebsiteMathTasks.Controllers
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Acc");
         }
         [HttpGet]
         [ActionName("Delete")]
@@ -119,13 +128,13 @@ namespace WebsiteMathTasks.Controllers
                 Models.Task task = new() { Id = id.Value };
                 _context.Entry(task).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Acc");
             }
             return NotFound();
         }
-        public IActionResult Privacy()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Tasks.ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
