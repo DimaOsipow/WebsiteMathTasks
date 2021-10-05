@@ -10,8 +10,8 @@ using WebsiteMathTasks.Data;
 namespace WebsiteMathTasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211001170157_ProfileCreating")]
-    partial class ProfileCreating
+    [Migration("20211005125804_website")]
+    partial class website
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,15 @@ namespace WebsiteMathTasks.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
+                            ConcurrencyStamp = "d6d52dac-5d70-43e5-b9b3-11c5ef6f251d",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -135,6 +144,24 @@ namespace WebsiteMathTasks.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c2c8c379-4b67-49a5-8f59-3654baf54ac4",
+                            Email = "my@email.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MY@EMAIL.COM",
+                            NormalizedUserName = "MY@EMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAdWu3nn1FuCxm9B+9Azs3hs7M5SWzOoTmmIEvcdizxzgfufIVv+QxqNcrazFQE85A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "my@email.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -198,6 +225,13 @@ namespace WebsiteMathTasks.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
+                            RoleId = "44546e06-8719-4ad8-b88a-f271ae9d6eab"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -228,10 +262,19 @@ namespace WebsiteMathTasks.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name2")
+                    b.Property<string>("SecondAnswer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThirdAnswer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAnswer")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+@{
+    ViewBag.Title = "Admin";
+}
+@*<ul>
+    @foreach (var user in Model)
+    {
+        <li>@user.Email</li>
+    }
+</ul>*@
+@foreach (var user in Model)
+{
+    @*@if (item.UserName == User.Identity.Name)*@
+    <table class="table">
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.Email)
+            </td>
+            <td>
+                <a asp-action="AdminDetails" asp-controller="Home" asp-route-id="@user.Id">Open</a>
+            </td>
+        </tr>
+    </table>
+}

@@ -1,20 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebsiteMathTasks.Data;
 using WebsiteMathTasks.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebsiteMathTasks.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
@@ -29,8 +26,10 @@ namespace WebsiteMathTasks.Controllers
             ViewData["ConditionSortParm"] = sortOrder == "Сondition" ? "Сondition_desc" : "Сondition";
             ViewData["ThemeSortParm"] = sortOrder == "theme" ? "theme_desc" : "theme";
             ViewData["CurrentFilter"] = searchString;
+
             var tasks = from s in _context.Tasks
                            select s;
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 tasks = tasks.Where(s => s.Name.Contains(searchString)
@@ -79,6 +78,7 @@ namespace WebsiteMathTasks.Controllers
         //    await _context.SaveChangesAsync();
         //    return RedirectToAction("Index");
         //}
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id != null)
@@ -132,9 +132,28 @@ namespace WebsiteMathTasks.Controllers
             }
             return NotFound();
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Tasks.ToListAsync());
+        }
+        [Authorize(Roles = "admin")]
+        public IActionResult Admin()
+        {
+            var users = _context.Users.ToList();
+
+            return View(users);
+        }
+        //[Area("Admin")]
+        public async Task<IActionResult> AdminDetails(string? Id)
+        {
+            if (Id != null)
+            {
+                IdentityUser User = await _context.Users.FirstOrDefaultAsync(p => p.Id == Id);
+                if (User != null)
+                    return Redirect("~/Home/Acc");
+            }
+            return NotFound();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
