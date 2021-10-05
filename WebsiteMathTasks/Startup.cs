@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebsiteMathTasks.Data;
+using WebsiteMathTasks.Services;
 
 namespace WebsiteMathTasks
 {
@@ -33,8 +34,16 @@ namespace WebsiteMathTasks
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddAuthorization(x =>
+            //{
+            //    x.AddPolicy("AdminArea", policy => { policy.RequireRole("admin"); });
+            //});
+            //services.AddControllersWithViews(x =>
+            //{
+            //    x.Conventions.Add(new AdminAreaAuthorization("Admin", "AdminArea"));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,10 +71,18 @@ namespace WebsiteMathTasks
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "admin",
+                    pattern: "{area:exists}/{controller=Admin}/{action=}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapRazorPages();
             });
+            
         }
+        
+        
     }
 }
