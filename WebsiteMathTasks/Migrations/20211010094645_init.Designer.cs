@@ -10,8 +10,8 @@ using WebsiteMathTasks.Data;
 namespace WebsiteMathTasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211005125804_website")]
-    partial class website
+    [Migration("20211010094645_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace WebsiteMathTasks.Migrations
                         new
                         {
                             Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
-                            ConcurrencyStamp = "d6d52dac-5d70-43e5-b9b3-11c5ef6f251d",
+                            ConcurrencyStamp = "43a91a81-baf2-4985-843e-e1eb8db467a5",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -150,13 +150,13 @@ namespace WebsiteMathTasks.Migrations
                         {
                             Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2c8c379-4b67-49a5-8f59-3654baf54ac4",
+                            ConcurrencyStamp = "5cfb99ba-0294-4d31-b081-b692e62e1327",
                             Email = "my@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MY@EMAIL.COM",
                             NormalizedUserName = "MY@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAdWu3nn1FuCxm9B+9Azs3hs7M5SWzOoTmmIEvcdizxzgfufIVv+QxqNcrazFQE85A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAxJfs7fR7poQh1J3nDFmMraoixs2LfrKD05HFLucsw2MGAq272n3FlQ3dRWHJIVbg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -255,6 +255,21 @@ namespace WebsiteMathTasks.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebsiteMathTasks.Models.IndexViewModel", b =>
+                {
+                    b.Property<int>("UserAnswerModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserAnswerModelId", "TaskId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("IndexViewModel");
+                });
+
             modelBuilder.Entity("WebsiteMathTasks.Models.Task", b =>
                 {
                     b.Property<int>("Id")
@@ -263,18 +278,17 @@ namespace WebsiteMathTasks.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Answer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondAnswer")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ThirdAnswer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAnswer")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -287,14 +301,40 @@ namespace WebsiteMathTasks.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("theme")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Сondition")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("WebsiteMathTasks.Models.UserAnswerModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DefendantName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAnswer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserTask")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isRightAnswer")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAnswerModels");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -346,6 +386,35 @@ namespace WebsiteMathTasks.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebsiteMathTasks.Models.IndexViewModel", b =>
+                {
+                    b.HasOne("WebsiteMathTasks.Models.Task", "tasks")
+                        .WithMany("IndexViewModels")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebsiteMathTasks.Models.UserAnswerModel", "userAnswerModels")
+                        .WithMany("IndexViewModels")
+                        .HasForeignKey("UserAnswerModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("tasks");
+
+                    b.Navigation("userAnswerModels");
+                });
+
+            modelBuilder.Entity("WebsiteMathTasks.Models.Task", b =>
+                {
+                    b.Navigation("IndexViewModels");
+                });
+
+            modelBuilder.Entity("WebsiteMathTasks.Models.UserAnswerModel", b =>
+                {
+                    b.Navigation("IndexViewModels");
                 });
 #pragma warning restore 612, 618
         }

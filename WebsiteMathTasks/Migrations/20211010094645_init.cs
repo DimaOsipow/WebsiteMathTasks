@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebsiteMathTasks.Migrations
 {
-    public partial class website : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,19 +53,34 @@ namespace WebsiteMathTasks.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Сondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    theme = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Сondition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    theme = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     img = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SecondAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ThirdAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ThirdAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAnswerModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserTask = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DefendantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isRightAnswer = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAnswerModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,15 +189,39 @@ namespace WebsiteMathTasks.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "IndexViewModel",
+                columns: table => new
+                {
+                    TaskId = table.Column<int>(type: "int", nullable: false),
+                    UserAnswerModelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IndexViewModel", x => new { x.UserAnswerModelId, x.TaskId });
+                    table.ForeignKey(
+                        name: "FK_IndexViewModel_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IndexViewModel_UserAnswerModels_UserAnswerModelId",
+                        column: x => x.UserAnswerModelId,
+                        principalTable: "UserAnswerModels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "44546e06-8719-4ad8-b88a-f271ae9d6eab", "d6d52dac-5d70-43e5-b9b3-11c5ef6f251d", "admin", "ADMIN" });
+                values: new object[] { "44546e06-8719-4ad8-b88a-f271ae9d6eab", "43a91a81-baf2-4985-843e-e1eb8db467a5", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3b62472e-4f66-49fa-a20f-e7685b9565d8", 0, "c2c8c379-4b67-49a5-8f59-3654baf54ac4", "my@email.com", true, false, null, "MY@EMAIL.COM", "MY@EMAIL.COM", "AQAAAAEAACcQAAAAEAdWu3nn1FuCxm9B+9Azs3hs7M5SWzOoTmmIEvcdizxzgfufIVv+QxqNcrazFQE85A==", null, false, "", false, "my@email.com" });
+                values: new object[] { "3b62472e-4f66-49fa-a20f-e7685b9565d8", 0, "5cfb99ba-0294-4d31-b081-b692e62e1327", "my@email.com", true, false, null, "MY@EMAIL.COM", "MY@EMAIL.COM", "AQAAAAEAACcQAAAAEAxJfs7fR7poQh1J3nDFmMraoixs2LfrKD05HFLucsw2MGAq272n3FlQ3dRWHJIVbg==", null, false, "", false, "my@email.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -227,6 +266,11 @@ namespace WebsiteMathTasks.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IndexViewModel_TaskId",
+                table: "IndexViewModel",
+                column: "TaskId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -247,13 +291,19 @@ namespace WebsiteMathTasks.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "IndexViewModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "UserAnswerModels");
         }
     }
 }
