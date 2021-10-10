@@ -17,6 +17,10 @@ namespace WebsiteMathTasks.Data
             //Database.EnsureCreated();
         }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<UserAnswerModel> UserAnswerModels { get; set; }
+
+        public DbSet<IndexViewModel> indexViewModels { get; set; }
+        
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -43,7 +47,27 @@ namespace WebsiteMathTasks.Data
                 RoleId = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
                 UserId = "3b62472e-4f66-49fa-a20f-e7685b9565d8"
             });
-        }
+
+            modelBuilder
+               .Entity<UserAnswerModel>()
+               .HasMany(c => c.Tasks)
+               .WithMany(s => s.UserAnswerModels)
+               .UsingEntity<IndexViewModel>(
+               j => j
+                   .HasOne(pt => pt.tasks)
+                   .WithMany(t => t.IndexViewModels)
+                   .HasForeignKey(pt => pt.TaskId),
+               j => j
+                   .HasOne(pt => pt.userAnswerModels)
+                   .WithMany(p => p.IndexViewModels)
+                   .HasForeignKey(pt => pt.UserAnswerModelId),
+               j =>
+               {
+                   
+                   j.HasKey(t => new { t.UserAnswerModelId, t.TaskId });
+                   j.ToTable("IndexViewModel");
+               });
+        }   
     }
 }
     

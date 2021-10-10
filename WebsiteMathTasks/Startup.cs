@@ -36,6 +36,7 @@ namespace WebsiteMathTasks
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddMvc(options => options.MaxModelValidationErrors = 50);
             //services.AddAuthorization(x =>
             //{
             //    x.AddPolicy("AdminArea", policy => { policy.RequireRole("admin"); });

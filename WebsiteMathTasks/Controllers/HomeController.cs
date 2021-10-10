@@ -66,8 +66,8 @@ namespace WebsiteMathTasks.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Models.Task task)
         {
-            _context.Tasks.Add(task);
             task.UserName = User.Identity.Name;
+            _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
             return RedirectToAction("Acc");
         }
@@ -81,13 +81,53 @@ namespace WebsiteMathTasks.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id != null)
             {
                 Models.Task task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
+
+                IndexViewModel indexViewModel = await _context.indexViewModels.FirstOrDefaultAsync(p => p.userAnswerModels.DefendantName == User.Identity.Name && p.tasks.Id == id);
                 if (task != null)
-                    return View(task);
+                {
+                    if (indexViewModel == null )
+                    {
+                        UserAnswerModel userAnswerModel = new UserAnswerModel { DefendantName = User.Identity.Name, UserTask = task.UserName };
+                        _context.UserAnswerModels.Add(userAnswerModel);
+                        userAnswerModel.Tasks.Add(task);
+                        _context.SaveChanges();
+                    }
+
+                    indexViewModel = await _context.indexViewModels.FirstOrDefaultAsync(p => p.userAnswerModels.DefendantName == User.Identity.Name && p.tasks.Id == id);
+                    indexViewModel.userAnswerModels = await _context.UserAnswerModels.FirstOrDefaultAsync(p => p.Id == indexViewModel.UserAnswerModelId);
+                    return View(indexViewModel);
+                }
             }
             return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Details(IndexViewModel indexViewModels, int? id)
+        {
+            
+            Models.Task task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
+            IndexViewModel indexViewModel = await _context.indexViewModels.FirstOrDefaultAsync(p => p.userAnswerModels.DefendantName == User.Identity.Name && p.tasks.Id == id);
+            UserAnswerModel userAnswerModel = await _context.UserAnswerModels.FirstOrDefaultAsync(p => p.Id == indexViewModel.UserAnswerModelId);
+            if (indexViewModels.userAnswerModels.UserAnswer == null )
+            {
+                userAnswerModel.isRightAnswer = false;
+            }
+            else if ( indexViewModels.userAnswerModels.UserAnswer != task.Answer && indexViewModels.userAnswerModels.UserAnswer != task.SecondAnswer && indexViewModels.userAnswerModels.UserAnswer != task.ThirdAnswer )
+            {
+                userAnswerModel.isRightAnswer = false;
+                userAnswerModel.UserAnswer = indexViewModels.userAnswerModels.UserAnswer;
+                await _context.SaveChangesAsync();
+            }
+            else 
+            {
+                userAnswerModel.isRightAnswer = true;
+                userAnswerModel.UserAnswer = indexViewModels.userAnswerModels.UserAnswer;
+                await _context.SaveChangesAsync();
+            }
+            return View(indexViewModel);
         }
         public async Task<IActionResult> Edit(int? id)
         {
@@ -103,6 +143,7 @@ namespace WebsiteMathTasks.Controllers
         public async Task<IActionResult> Edit(Models.Task task)
         {
             _context.Tasks.Update(task);
+            task.UserName = User.Identity.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction("Acc");
         }
