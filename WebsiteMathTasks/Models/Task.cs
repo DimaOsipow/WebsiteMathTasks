@@ -16,7 +16,6 @@ namespace WebsiteMathTasks.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "This field is required")]
         public string Сondition { get; set; }
-        [Required(ErrorMessage = "This field is required")]
         public string theme { get; set; }
         public string tag { get; set; }
         public string img { get; set; }
@@ -24,6 +23,7 @@ namespace WebsiteMathTasks.Models
         public string Answer { get; set; }
         public string SecondAnswer{ get; set; }
         public string ThirdAnswer { get; set; }
+        //public int TaskRating { get; set; }
         //public IEnumerable<UserAnswerModel> userAnswerModels { get; set; }
         public List<UserAnswerModel> UserAnswerModels { get; set; } = new List<UserAnswerModel>();
         public List<IndexViewModel> IndexViewModels { get; set; } = new List<IndexViewModel>();

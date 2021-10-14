@@ -1,37 +1,42 @@
 ﻿@model WebsiteMathTasks.Models.Task
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
-<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
+<form asp-action="edit" asp-controller="home">
     <div class="form-group">
-        <label asp-for="Name" class="control-label">title</label>
+        <label asp-for="Name" class="control-label">@localizer["title"]</label>
         <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Сondition" class="control-label">Сondition</label>
+        <label asp-for="Сondition" class="control-label">@localizer["Сondition"]</label>
         <input type="text" asp-for="Сondition" class="form-control" />
+        <span asp-validation-for="Сondition" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="theme" class="control-label">Theme</label>
-        <input type="text" asp-for="theme" class="form-control" />
+        <label asp-for="theme" class="control-label">@localizer["Theme"]</label>
+        <select name="SelectedItem" asp-items="@ViewBag.SelectItems" class="form-control"> </select>
+
     </div>
     <div class="form-group">
-        <label asp-for="tag" class="control-label">Tag</label>
+        <label asp-for="tag" class="control-label">@localizer["Tag"]</label>
         <input type="text" asp-for="tag" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Answer" class="control-label">Answerg</label>
+        <label asp-for="Answer" class="control-label">@localizer["Answer"]</label>
         <input type="text" asp-for="Answer" class="form-control" />
+        <span asp-validation-for="Answer" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="SecondAnswer" class="control-label">SecondAnswer</label>
+        <label asp-for="SecondAnswer" class="control-label">@localizer["Second Answer"]</label>
         <input type="text" asp-for="SecondAnswer" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="ThirdAnswer" class="control-label">ThirdAnswer</label>
+        <label asp-for="ThirdAnswer" class="control-label">@localizer["Third Answer"]</label>
         <input type="text" asp-for="ThirdAnswer" class="form-control" />
     </div>
     <div class="form-group">
-        <input type="submit" value="submit" class="btn btn-default" />
+        <input type="submit" value=@localizer["submit"] class="btn btn-default" />
     </div>
 </form>

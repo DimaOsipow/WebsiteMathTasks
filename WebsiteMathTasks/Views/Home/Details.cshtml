@@ -1,31 +1,36 @@
 ﻿@using WebsiteMathTasks.Models
 @model IndexViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
     ViewBag.Title = "aaaa";
 }
-<h2>Model.tasks.Name </h2>
+<h2>@Model.tasks.Name </h2>
+
 <div>
     <dl class="dl-horizontal">
         <dt>Id</dt>
         <dd>@Model.tasks.Id</dd>
 
-        <dt>Сondition</dt>
+        <dt>@localizer["Сondition"]</dt>
         <dd>@Model.tasks.Сondition</dd>
+
+        <dt>@localizer["Theme"]</dt>
+        <dd>@Model.tasks.theme</dd>
     </dl>
 </div>
 
 @if (Model.tasks.UserName != User.Identity.Name && User.Identity.Name != null)
 {
-    <form asp-action="Details" asp-controller="Home" >
-        <div>
-            <label asp-for="@Model.userAnswerModels.UserAnswer" >Answer</label><br />
-            <input type="text" asp-for="@Model.userAnswerModels.UserAnswer" />
-            <span asp-validation-for="@Model.userAnswerModels.UserAnswer"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="submit" class="btn btn-default" disabled="@Model.userAnswerModels.isRightAnswer" />
-        </div>
+<form asp-action="Details" asp-controller="Home">
+    <div>
+        <label asp-for="@Model.userAnswerModels.UserAnswer">@localizer["Answer"]</label><br />
+        <input type="text" asp-for="@Model.userAnswerModels.UserAnswer" />
+        <span asp-validation-for="@Model.userAnswerModels.UserAnswer"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value=@localizer["submit"] class="btn btn-default" disabled="@Model.userAnswerModels.isRightAnswer" />
+    </div>
 
-    </form>
+</form>
 }
