@@ -8,6 +8,9 @@ using WebsiteMathTasks.Data;
 using WebsiteMathTasks.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace WebsiteMathTasks.Controllers
 {
@@ -19,6 +22,16 @@ namespace WebsiteMathTasks.Controllers
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
+        }
+        [HttpPost]
+        public IActionResult SetCulture(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            return LocalRedirect(returnUrl);
         }
         public async Task <IActionResult> Acc(string sortOrder, string searchString)
         {
@@ -61,15 +74,26 @@ namespace WebsiteMathTasks.Controllers
         }
         public IActionResult Create()
         {
+            string[] theme = {"algebra", "geometry", "number theory", "Java" };
+            SelectList selectLists = new SelectList ( theme, theme[0] );
+            ViewBag.SelectItems = selectLists;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task)
-        {
-            task.UserName = User.Identity.Name;
-            _context.Tasks.Add(task);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Acc");
+        public async Task<IActionResult> Create(Models.Task task, string selectedItem)
+        {   
+            if (ModelState.IsValid)
+            {
+                task.theme = selectedItem;
+                task.UserName = User.Identity.Name;
+                _context.Tasks.Add(task);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Acc");
+            }
+            else
+            {
+                return View(task);
+            }
         }
         //public async Task<IActionResult> CreateTask (Models.Task task)
         //{
@@ -133,6 +157,9 @@ namespace WebsiteMathTasks.Controllers
         {
             if (id != null)
             {
+                string[] theme = { "algebra", "geometry", "number theory", "Java" };
+                SelectList selectLists = new SelectList(theme, theme[0]);
+                ViewBag.SelectItems = selectLists;
                 Models.Task task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
                 if (task != null)
                     return View(task);
@@ -140,12 +167,21 @@ namespace WebsiteMathTasks.Controllers
             return NotFound();
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Models.Task task)
+        public async Task<IActionResult> Edit(Models.Task task, string selectedItem)
         {
-            _context.Tasks.Update(task);
-            task.UserName = User.Identity.Name;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Acc");
+            if (ModelState.IsValid)
+            {
+
+                _context.Tasks.Update(task);
+                task.theme = selectedItem;
+                task.UserName = User.Identity.Name;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Acc");
+            }
+            else
+            {
+                return View(task);
+            }
         }
         [HttpGet]
         [ActionName("Delete")]

@@ -1,11 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-WebsiteMathTasks-5D29FABA-5314-4BDA-8360-494735F0F7AD</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup>    
+	<PackageReference Include="Dropbox.Api" Version="6.17.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.55.0.2453" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.10" />

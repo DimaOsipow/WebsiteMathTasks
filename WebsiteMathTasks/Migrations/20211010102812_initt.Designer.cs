@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebsiteMathTasks.Data;
 
 namespace WebsiteMathTasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211010102812_initt")]
+    partial class initt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace WebsiteMathTasks.Migrations
                         new
                         {
                             Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
-                            ConcurrencyStamp = "0045dfcd-6860-4cb5-86c5-44701f72adc0",
+                            ConcurrencyStamp = "138338c7-278c-4911-a212-7feb50f99951",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -148,13 +150,13 @@ namespace WebsiteMathTasks.Migrations
                         {
                             Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b199c1c7-e9ca-411e-8c76-4e047f396665",
+                            ConcurrencyStamp = "44d1d7cf-28f0-4a7e-9f62-765098dc0c7f",
                             Email = "my@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MY@EMAIL.COM",
                             NormalizedUserName = "MY@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELUdmW4d9wrGOD9091V5vSFhEdHFl4eta55TK54USTnD3qjv8UnOzc8emjjBqvuD5A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPfe/Kr1ykywG6z1FWj62gphMNJVuxMAz8lZL/spckMxRfXiXPThe7x0ePpxDP+O/g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -299,6 +301,7 @@ namespace WebsiteMathTasks.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("theme")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Сondition")

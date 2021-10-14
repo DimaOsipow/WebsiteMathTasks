@@ -1,18 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 using WebsiteMathTasks.Data;
-using WebsiteMathTasks.Services;
 
 namespace WebsiteMathTasks
 {
@@ -32,11 +29,27 @@ namespace WebsiteMathTasks
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddMvc(options => options.MaxModelValidationErrors = 50);
+            services.AddMvc(options => options.MaxModelValidationErrors = 50)
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo ("en"),
+                    new CultureInfo ("ru")
+                };
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+
+            });
+
             //services.AddAuthorization(x =>
             //{
             //    x.AddPolicy("AdminArea", policy => { policy.RequireRole("admin"); });
@@ -65,6 +78,8 @@ namespace WebsiteMathTasks
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseAuthentication();
             app.UseAuthorization();
