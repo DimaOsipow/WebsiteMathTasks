@@ -5,23 +5,23 @@
 }
 <form asp-action="edit" asp-controller="home">
     <div class="form-group">
-        <label asp-for="Name" class="control-label">@localizer["title"]</label>
+        <label asp-for="Name" class="control-label">@localizer["Title"]</label>
         <input type="text" asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Сondition" class="control-label">@localizer["Сondition"]</label>
-        <input type="text" asp-for="Сondition" class="form-control" />
-        <span asp-validation-for="Сondition" class="text-danger"></span>
+        <label asp-for="Description" class="control-label">@localizer["Description"]</label>
+        <input type="text" asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="theme" class="control-label">@localizer["Theme"]</label>
+        <label asp-for="Theme" class="control-label">@localizer["Theme"]</label>
         <select name="SelectedItem" asp-items="@ViewBag.SelectItems" class="form-control"> </select>
 
     </div>
     <div class="form-group">
-        <label asp-for="tag" class="control-label">@localizer["Tag"]</label>
-        <input type="text" asp-for="tag" class="form-control" />
+        <label asp-for="Tag" class="control-label">@localizer["Tag"]</label>
+        <input type="text" asp-for="Tag" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Answer" class="control-label">@localizer["Answer"]</label>
@@ -37,6 +37,6 @@
         <input type="text" asp-for="ThirdAnswer" class="form-control" />
     </div>
     <div class="form-group">
-        <input type="submit" value=@localizer["submit"] class="btn btn-default" />
+        <input class="btn btn-outline-primary" role="button" type="submit" value=@localizer["submit"]  />
     </div>
 </form>

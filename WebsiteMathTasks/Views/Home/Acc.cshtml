@@ -3,13 +3,13 @@
 @{
     ViewBag.Title = "All task";
 }
-<a asp-action="create">@localizer["add task"]</a>
-<form asp-action="Acc" method="get">
+<a class="btn btn-outline-primary" role="button" asp-action="create" asp-controller="home">@localizer["add task"]</a>
+<form asp-action="acc" method="get">
 <div class="form-actions no-color">
     <p>
-        @localizer["Find by name:"] <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-        <input type="submit" value=@localizer["Search"] class="btn btn-default" /> |
-        <a asp-action="Acc">@localizer["Back to Full List"]</a>
+        @localizer["Find by name:"] <input type="text" name="searchstring" value="@ViewData["CurrentFilter"]" />
+        <input asp-controller="home" asp-action="acc" type="submit" value=@localizer["Search"] class="btn btn-default"  /> |
+        <a asp-controller="home" asp-action="acc">@localizer["Back to Full List"]</a>
     </p>
 </div>
 </form>
@@ -17,13 +17,13 @@
     <thead>
             <tr>
                 <th>
-                    <a asp-action="Acc" asp-route-sortOrder="@ViewData["NameSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Name)]</a>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["NameSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Name)]</a>
                 </th>
                 <th>
-                    <a asp-action="Acc" asp-route-sortOrder="@ViewData["ConditionSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Сondition)]</a>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ConditionSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Description)]</a>
                 </th>
                 <th>
-                    <a asp-action="Acc" asp-route-sortOrder="@ViewData["ThemeSortParm"]">@localizer[@Html.DisplayNameFor(model => model.theme)]</a>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ThemeSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Theme)]</a>
                 </th>
                 <th></th>
             </tr>
@@ -38,16 +38,16 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Сondition)
+                            @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.theme)
+                            @Html.DisplayFor(modelItem => item.Theme)
                         </td>
 
                         <td>
-                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">@localizer["Open"]</a> |
-                            <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">@localizer["Create"]</a> |
-                            <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">@localizer["Delete"]</a>
+                            <a asp-action="details" asp-controller="home" asp-route-id="@item.Id">@localizer["Open"]</a> |
+                            <a asp-action="edit" asp-controller="home" asp-route-id="@item.Id">@localizer["Update"]</a> |
+                            <a asp-action="delete" asp-controller="home" asp-route-id="@item.Id">@localizer["Delete"]</a>
                         </td>
                     </tr>
                 }

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WebsiteMathTasks.Models;
 
 namespace WebsiteMathTasks.Data
@@ -14,7 +11,6 @@ namespace WebsiteMathTasks.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //Database.EnsureCreated();
         }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<UserAnswerModel> UserAnswerModels { get; set; }

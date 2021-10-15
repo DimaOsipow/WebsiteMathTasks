@@ -120,13 +120,13 @@
   <data name="Answer" xml:space="preserve">
     <value>Ответ</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
   <data name="submit" xml:space="preserve">
     <value>разместить</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Тема</value>
-  </data>
-  <data name="Сondition" xml:space="preserve">
-    <value>Описание</value>
   </data>
 </root>
