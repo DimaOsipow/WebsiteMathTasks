@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "All tasks";
 }
-@*<a asp-action="Create">add task</a>*@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -14,43 +13,16 @@
     </div>
 </form>
 <table class="table">
-    @*<thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ConditionSortParm"]">@Html.DisplayNameFor(model => model.Сondition)</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ThemeSortParm"]">@Html.DisplayNameFor(model => model.theme)</a>
-                </th>
-                <th></th>
-            </tr>
-        </thead>*@
 
     @foreach (var item in Model)
     {
-        @*@if (item.UserName == User.Identity.Name)*@
-
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Сondition)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.theme)
-                </td>*@
-
             <td>
                 <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">@localizer["Open"]</a>
-                @*<a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">Create</a> |
-                    <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
-
-
     }
 </table>

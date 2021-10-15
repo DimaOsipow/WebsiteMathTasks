@@ -123,11 +123,11 @@
   <data name="Back to Full List" xml:space="preserve">
     <value>Вернуться к полному списку</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Изменить</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
   </data>
   <data name="Find by name:" xml:space="preserve">
     <value>Найти по имени</value>
@@ -144,7 +144,7 @@
   <data name="theme" xml:space="preserve">
     <value>тема</value>
   </data>
-  <data name="Сondition" xml:space="preserve">
-    <value>Описание</value>
+  <data name="Update" xml:space="preserve">
+    <value>Обновить</value>
   </data>
 </root>

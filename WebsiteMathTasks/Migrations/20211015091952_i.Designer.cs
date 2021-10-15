@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebsiteMathTasks.Data;
 
 namespace WebsiteMathTasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211015091952_i")]
+    partial class i
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace WebsiteMathTasks.Migrations
                         new
                         {
                             Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
-                            ConcurrencyStamp = "89cdb449-f8ac-41f8-beb0-1cd51974e82f",
+                            ConcurrencyStamp = "b5491224-4c2f-4585-b876-8a77aecef230",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -148,13 +150,13 @@ namespace WebsiteMathTasks.Migrations
                         {
                             Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d68037cd-d3bd-4bd4-90a6-929e515108ba",
+                            ConcurrencyStamp = "d99f8dc2-5c18-4c20-a6c7-40456c85ef18",
                             Email = "my@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MY@EMAIL.COM",
                             NormalizedUserName = "MY@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHZS+rRKNJPeesbkeYMwKmmeQ8Y+EHjDiAlcPT1rp9jxW0W630FHHYUotDXPEIrmHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELcFSzgm/hmtCFstptgBpnHoKDw71FTbI3pyuYg4cMHT5y0FD44Z5Xm7xL7yKrA77g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -290,12 +292,6 @@ namespace WebsiteMathTasks.Migrations
                     b.Property<string>("SecondAnswer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Theme")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ThirdAnswer")
                         .HasColumnType("nvarchar(max)");
 
@@ -303,6 +299,12 @@ namespace WebsiteMathTasks.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("tag")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("theme")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

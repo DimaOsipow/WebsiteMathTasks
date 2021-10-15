@@ -33,38 +33,38 @@ namespace WebsiteMathTasks.Controllers
             );
             return LocalRedirect(returnUrl);
         }
-        public async Task <IActionResult> Acc(string sortOrder, string searchString)
+        public async Task <IActionResult> Acc(string sortorder, string searchstring)
         {
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
-            ViewData["ConditionSortParm"] = sortOrder == "Сondition" ? "Сondition_desc" : "Сondition";
-            ViewData["ThemeSortParm"] = sortOrder == "theme" ? "theme_desc" : "theme";
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortorder) ? "name_desc" : "";
+            ViewData["ConditionSortParm"] = sortorder == "condition" ? "condition_desc" : "condition";
+            ViewData["ThemeSortParm"] = sortorder == "theme" ? "theme_desc" : "theme";
+            ViewData["CurrentFilter"] = searchstring;
 
             var tasks = from s in _context.Tasks
                            select s;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchstring))
             {
-                tasks = tasks.Where(s => s.Name.Contains(searchString)
-                                       || s.Сondition.Contains(searchString)
-                                       || s.theme.Contains(searchString));
+                tasks = tasks.Where(s => s.Name.Contains(searchstring)
+                                       || s.Description.Contains(searchstring)
+                                       || s.Theme.Contains(searchstring));
             }
-            switch (sortOrder)
+            switch (sortorder)
             {
                 case "name_desc":
                     tasks = tasks.OrderBy(s => s.Name);
                     break;
-                case "Сondition":
-                    tasks = tasks.OrderBy(s => s.Сondition);
+                case "condition":
+                    tasks = tasks.OrderBy(s => s.Description);
                     break;
-                case "Сondition_desc":
-                    tasks = tasks.OrderByDescending(s => s.Сondition);
+                case "condition_desc":
+                    tasks = tasks.OrderByDescending(s => s.Description);
                     break;
                 case "theme":
-                    tasks = tasks.OrderBy(s => s.theme);
+                    tasks = tasks.OrderBy(s => s.Theme);
                     break;
                 case "theme_desc":
-                    tasks = tasks.OrderByDescending(s => s.theme);
+                    tasks = tasks.OrderByDescending(s => s.Theme);
                     break;
                 default:
                     tasks = tasks.OrderByDescending(s => s.Name);
@@ -84,7 +84,7 @@ namespace WebsiteMathTasks.Controllers
         {   
             if (ModelState.IsValid)
             {
-                task.theme = selectedItem;
+                task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
                 _context.Tasks.Add(task);
                 await _context.SaveChangesAsync();
@@ -92,16 +92,11 @@ namespace WebsiteMathTasks.Controllers
             }
             else
             {
-                return View(task);
+                Create();
+                return View("create");
             }
         }
-        //public async Task<IActionResult> CreateTask (Models.Task task)
-        //{
-        //    _context.Tasks.Add(task);
-        //    task.UserName = User.Identity.Name;
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction("Index");
-        //}
+        
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
@@ -173,13 +168,16 @@ namespace WebsiteMathTasks.Controllers
             {
 
                 _context.Tasks.Update(task);
-                task.theme = selectedItem;
+                task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Acc");
             }
             else
             {
+                string[] theme = { "algebra", "geometry", "number theory", "Java" };
+                SelectList selectLists = new SelectList(theme, theme[0]);
+                ViewBag.SelectItems = selectLists;
                 return View(task);
             }
         }
@@ -221,7 +219,7 @@ namespace WebsiteMathTasks.Controllers
 
             return View(users);
         }
-        //[Area("Admin")]
+        
         public async Task<IActionResult> AdminDetails(string? Id)
         {
             if (Id != null)
