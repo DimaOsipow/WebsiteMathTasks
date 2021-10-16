@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Authentication;
 
 namespace WebsiteMathTasks.Controllers
 {
@@ -19,9 +22,14 @@ namespace WebsiteMathTasks.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         public ApplicationDbContext _context;
-        public HomeController(ApplicationDbContext context)
+        public UserManager<IdentityUser> _userManager;
+
+        public SignInManager<IdentityUser> _signInManager;
+        public HomeController(ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         [HttpPost]
         public IActionResult SetCulture(string culture, string returnUrl)
@@ -222,13 +230,35 @@ namespace WebsiteMathTasks.Controllers
         
         public async Task<IActionResult> AdminDetails(string? Id)
         {
-            if (Id != null)
-            {
-                IdentityUser User = await _context.Users.FirstOrDefaultAsync(p => p.Id == Id);
-                if (User != null)
-                    return Redirect("~/Home/Acc");
-            }
-            return NotFound();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            string currentUserId = user.Id ;
+
+            var impersonatedUser = await _userManager.FindByIdAsync(Id);
+
+            var userPrincipal = await _signInManager.CreateUserPrincipalAsync(impersonatedUser);
+
+            userPrincipal.Identities.First().AddClaim(new Claim("OriginalUserId", currentUserId));
+            userPrincipal.Identities.First().AddClaim(new Claim("IsImpersonating", "true"));
+
+            await _signInManager.SignOutAsync();
+
+            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, userPrincipal);
+
+            return RedirectToAction("Index", "Home");
+
+        }
+        public async Task<IActionResult> AdminReturn()
+        {
+            var originalUserId = User.FindFirst("OriginalUserId").Value;
+
+            var originalUser = await _userManager.FindByIdAsync(originalUserId);
+
+            await _signInManager.SignOutAsync();
+
+            await _signInManager.SignInAsync(originalUser, isPersistent: true);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -34,6 +34,7 @@ namespace WebsiteMathTasks
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddMvc(options => options.MaxModelValidationErrors = 50)
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
@@ -50,14 +51,6 @@ namespace WebsiteMathTasks
 
             });
 
-            //services.AddAuthorization(x =>
-            //{
-            //    x.AddPolicy("AdminArea", policy => { policy.RequireRole("admin"); });
-            //});
-            //services.AddControllersWithViews(x =>
-            //{
-            //    x.Conventions.Add(new AdminAreaAuthorization("Admin", "AdminArea"));
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +79,9 @@ namespace WebsiteMathTasks
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "return",
+                    pattern: "{area:exists}/{controller=home}/{action=adminreturn}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "admin",
                     pattern: "{area:exists}/{controller=Admin}/{action=}/{id?}");

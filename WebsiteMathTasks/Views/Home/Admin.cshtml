@@ -8,10 +8,7 @@
     <table class="table">
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                <a asp-action="AdminDetails" asp-controller="Home" asp-route-id="@user.Id">Open</a>
+                <a asp-action="AdminDetails" asp-controller="home" asp-route-id="@user.Id">@Html.DisplayFor(modelItem => user.Email)</a>
             </td>
         </tr>
     </table>
