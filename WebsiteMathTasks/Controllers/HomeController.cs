@@ -20,8 +20,9 @@ namespace WebsiteMathTasks.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
+        
         public ApplicationDbContext _context;
+
         public UserManager<IdentityUser> _userManager;
 
         public SignInManager<IdentityUser> _signInManager;
@@ -31,6 +32,7 @@ namespace WebsiteMathTasks.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+        
         [HttpPost]
         public IActionResult SetCulture(string culture, string returnUrl)
         {
@@ -80,6 +82,7 @@ namespace WebsiteMathTasks.Controllers
             }
             return View(await tasks.AsNoTracking().ToListAsync());
         }
+    
         public IActionResult Create()
         {
             string[] theme = {"algebra", "geometry", "number theory", "Java" };
@@ -88,13 +91,16 @@ namespace WebsiteMathTasks.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task, string selectedItem)
+        public async Task<IActionResult> Create(Models.Task task, string selectedItem )
         {   
             if (ModelState.IsValid)
             {
                 task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
                 _context.Tasks.Add(task);
+                if(await _context.tags.FirstOrDefaultAsync(p =>p.Tag == task.Tag) == null) 
+                    _context.tags.Add(new Tags { Tag = task.Tag });
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Acc");
             }
@@ -178,6 +184,8 @@ namespace WebsiteMathTasks.Controllers
                 _context.Tasks.Update(task);
                 task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
+                if (await _context.tags.FirstOrDefaultAsync(p => p.Tag == task.Tag) == null)
+                    _context.tags.Add(new Tags { Tag = task.Tag });
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Acc");
             }
