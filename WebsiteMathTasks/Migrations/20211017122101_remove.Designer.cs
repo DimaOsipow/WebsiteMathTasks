@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebsiteMathTasks.Data;
 
 namespace WebsiteMathTasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211017122101_remove")]
+    partial class remove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace WebsiteMathTasks.Migrations
                         new
                         {
                             Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
-                            ConcurrencyStamp = "c6eb3600-c4a1-433c-befb-3cfbc4c50959",
+                            ConcurrencyStamp = "60cf7a8a-b560-4513-bd78-40737c9aea98",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -148,13 +150,13 @@ namespace WebsiteMathTasks.Migrations
                         {
                             Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c6a1fe83-dc46-41e4-b9fc-1b170e2412c8",
+                            ConcurrencyStamp = "3bde4630-710d-43ba-827e-40ed33a474dc",
                             Email = "my@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MY@EMAIL.COM",
                             NormalizedUserName = "MY@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEn2Naka2nw/L6ZYtQNzJ5Roz58InNXfOuiGTjfZHyOSFtzNR+6/04P6TknzY82hsw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECiHBq4Uh1UbbA/nyihdwy2JDKW9Z+ZhLWJabOp9sgkXLvnOLwvvBk88APqV1BSxfQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -291,10 +293,6 @@ namespace WebsiteMathTasks.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
