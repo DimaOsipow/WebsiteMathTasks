@@ -56,19 +56,12 @@ namespace WebsiteMathTasks.Controllers
             if (!String.IsNullOrEmpty(searchstring))
             {
                 tasks = tasks.Where(s => s.Name.Contains(searchstring)
-                                       || s.Description.Contains(searchstring)
                                        || s.Theme.Contains(searchstring));
             }
             switch (sortorder)
             {
                 case "name_desc":
                     tasks = tasks.OrderBy(s => s.Name);
-                    break;
-                case "condition":
-                    tasks = tasks.OrderBy(s => s.Description);
-                    break;
-                case "condition_desc":
-                    tasks = tasks.OrderByDescending(s => s.Description);
                     break;
                 case "theme":
                     tasks = tasks.OrderBy(s => s.Theme);
@@ -80,6 +73,17 @@ namespace WebsiteMathTasks.Controllers
                     tasks = tasks.OrderByDescending(s => s.Name);
                     break;
             }
+
+            if (await _context.userResults.FirstOrDefaultAsync(p => p.User == User.Identity.Name) == null)
+            {
+                _context.userResults.Add(new UserResult { User = User.Identity.Name, TaskNumber = 0 });
+                await _context.SaveChangesAsync();
+            }
+
+            var UserResult = await _context.userResults.FirstOrDefaultAsync(p => p.User == User.Identity.Name);
+            ViewBag.UserResult = UserResult.TaskNumber;
+            ViewBag.UserAnswerResult = UserResult.AnswerCorrectNumber;
+
             return View(await tasks.AsNoTracking().ToListAsync());
         }
     
@@ -91,17 +95,23 @@ namespace WebsiteMathTasks.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task, string selectedItem )
+        public async Task<IActionResult> Create(Models.Task task, string selectedItem)
         {   
             if (ModelState.IsValid)
             {
                 task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
+
                 _context.Tasks.Add(task);
+
                 if(await _context.tags.FirstOrDefaultAsync(p =>p.Tag == task.Tag) == null) 
                     _context.tags.Add(new Tags { Tag = task.Tag });
+    
+                var Userresult = await _context.userResults.FirstOrDefaultAsync(p => p.User == task.UserName);
+                Userresult.TaskNumber += 1;
 
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("Acc");
             }
             else
@@ -144,20 +154,27 @@ namespace WebsiteMathTasks.Controllers
             Models.Task task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
             IndexViewModel indexViewModel = await _context.indexViewModels.FirstOrDefaultAsync(p => p.userAnswerModels.DefendantName == User.Identity.Name && p.tasks.Id == id);
             UserAnswerModel userAnswerModel = await _context.UserAnswerModels.FirstOrDefaultAsync(p => p.Id == indexViewModel.UserAnswerModelId);
+
             if (indexViewModels.userAnswerModels.UserAnswer == null )
             {
                 userAnswerModel.isRightAnswer = false;
             }
+
             else if ( indexViewModels.userAnswerModels.UserAnswer != task.Answer && indexViewModels.userAnswerModels.UserAnswer != task.SecondAnswer && indexViewModels.userAnswerModels.UserAnswer != task.ThirdAnswer )
             {
                 userAnswerModel.isRightAnswer = false;
                 userAnswerModel.UserAnswer = indexViewModels.userAnswerModels.UserAnswer;
                 await _context.SaveChangesAsync();
             }
+
             else 
             {
                 userAnswerModel.isRightAnswer = true;
                 userAnswerModel.UserAnswer = indexViewModels.userAnswerModels.UserAnswer;
+
+                var UserAnswerResult = await _context.userResults.FirstOrDefaultAsync(p => p.User == User.Identity.Name);
+                UserAnswerResult.AnswerCorrectNumber += 1;
+
                 await _context.SaveChangesAsync();
             }
             return View(indexViewModel);
@@ -184,8 +201,10 @@ namespace WebsiteMathTasks.Controllers
                 _context.Tasks.Update(task);
                 task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
+
                 if (await _context.tags.FirstOrDefaultAsync(p => p.Tag == task.Tag) == null)
                     _context.tags.Add(new Tags { Tag = task.Tag });
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Acc");
             }
@@ -218,7 +237,12 @@ namespace WebsiteMathTasks.Controllers
             {
                 Models.Task task = new() { Id = id.Value };
                 _context.Entry(task).State = EntityState.Deleted;
+
+                var Userresult = await _context.userResults.FirstOrDefaultAsync(p => p.User == User.Identity.Name);
+                Userresult.TaskNumber -= 1;
+
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("Acc");
             }
             return NotFound();

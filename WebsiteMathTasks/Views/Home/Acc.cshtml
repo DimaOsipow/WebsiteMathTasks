@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WebsiteMathTasks.Models.Task>
+
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     ViewBag.Title = "All task";
@@ -13,6 +14,8 @@
     </p>
 </div>
 </form>
+<h4>Number of tasks created: @ViewBag.UserResult </h4>
+<h4>Number of tasks solved: @ViewBag.UserAnswerResult </h4>
 <table class="table">
     <thead>
             <tr>
@@ -38,7 +41,7 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
+                            <markdown normalize-whitespace="true">@Html.DisplayFor(modelItem => item.Description)</markdown>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Theme)

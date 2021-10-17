@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebsiteMathTasks.Models
 {
@@ -9,6 +11,7 @@ namespace WebsiteMathTasks.Models
         public string UserName { get; set; }
         [Required(ErrorMessage = "This field is required")]
         public string Name { get; set; }
+        
         [Required(ErrorMessage = "This field is required")]
         public string Description { get; set; }
         public string Theme { get; set; }

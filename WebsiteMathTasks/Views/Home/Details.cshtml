@@ -13,7 +13,7 @@
         <dd>@Model.tasks.Id</dd>
 
         <dt>@localizer["Description"]</dt>
-        <dd>@Model.tasks.Description</dd>
+        <dd><markdown normalize-whitespace="true">@Model.tasks.Description</markdown></dd>
 
         <dt>@localizer["Theme"]</dt>
         <dd>@Model.tasks.Theme</dd>
@@ -22,15 +22,15 @@
 
 @if (Model.tasks.UserName != User.Identity.Name && User.Identity.Name != null)
 {
-<form asp-action="details" asp-controller="home">
-    <div>
-        <label asp-for="@Model.userAnswerModels.UserAnswer">@localizer["Answer"]</label><br />
-        <input type="text" asp-for="@Model.userAnswerModels.UserAnswer" />
-        <span asp-validation-for="@Model.userAnswerModels.UserAnswer"></span>
-    </div>
-    <div class="form-group">
-        <input  type="submit" value=@localizer["submit"] class="btn btn-default" disabled="@Model.userAnswerModels.isRightAnswer" />
-    </div>
+    <form asp-action="details" asp-controller="home">
+        <div>
+            <label asp-for="@Model.userAnswerModels.UserAnswer">@localizer["Answer"]</label><br />
+            <input type="text" asp-for="@Model.userAnswerModels.UserAnswer" />
+            <span asp-validation-for="@Model.userAnswerModels.UserAnswer"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value=@localizer["submit"] class="btn btn-default" disabled="@Model.userAnswerModels.isRightAnswer" />
+        </div>
 
-</form>
+    </form>
 }

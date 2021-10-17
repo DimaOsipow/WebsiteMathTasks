@@ -16,6 +16,7 @@ namespace WebsiteMathTasks.Data
         public DbSet<UserAnswerModel> UserAnswerModels { get; set; }
         public DbSet<IndexViewModel> indexViewModels { get; set; }
         public DbSet<Tags> tags { get; set; }
+        public DbSet<UserResult> userResults { get; set; }
         
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
