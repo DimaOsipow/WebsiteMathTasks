@@ -49,7 +49,7 @@ namespace WebsiteMathTasks.Migrations
                         new
                         {
                             Id = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
-                            ConcurrencyStamp = "cc74292a-a80a-491c-aa96-ac413ae7c3b7",
+                            ConcurrencyStamp = "c6eb3600-c4a1-433c-befb-3cfbc4c50959",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -148,13 +148,13 @@ namespace WebsiteMathTasks.Migrations
                         {
                             Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3edfbe0c-1ca8-4d7d-ab78-68991902abea",
+                            ConcurrencyStamp = "c6a1fe83-dc46-41e4-b9fc-1b170e2412c8",
                             Email = "my@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MY@EMAIL.COM",
                             NormalizedUserName = "MY@EMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK8/108RxfqYLuYqVFFGVKDY1x8ZfM1WbyiuUyuui1j1pLZlWh7qka/I4vQpvHUvtA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEn2Naka2nw/L6ZYtQNzJ5Roz58InNXfOuiGTjfZHyOSFtzNR+6/04P6TknzY82hsw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -292,9 +292,6 @@ namespace WebsiteMathTasks.Migrations
 
                     b.Property<string>("Answer")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DataTime")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")

@@ -4,69 +4,57 @@
 @{
     ViewBag.Title = "All task";
 }
-
-<div class="container">
-    <div class="row">
-        <div class="col-9">
-            <a class="btn btn-outline-primary" role="button" asp-action="create" asp-controller="home">@localizer["add task"]</a>
-            <form asp-action="acc" method="get">
-                <div class="form-actions no-color">
-                    <p>
-                        @localizer["Find by name:"] <input type="text" name="searchstring" value="@ViewData["CurrentFilter"]" />
-                        <input asp-controller="home" asp-action="acc" type="submit" value=@localizer["Search"] class="btn btn-default" /> |
-                        <a asp-controller="home" asp-action="acc">@localizer["Back to Full List"]</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-        <div class="col-7">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["NameSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Name)]</a>
-                        </th>
-                        <th>
-                            <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ConditionSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Description)]</a>
-                        </th>
-                        <th>
-                            <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ThemeSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Theme)]</a>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        @if (item.UserName == User.Identity.Name)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    <markdown normalize-whitespace="true">@Html.DisplayFor(modelItem => item.Description)</markdown>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Theme)
-                                </td>
-
-                                <td>
-                                    <a asp-action="details" asp-controller="home" asp-route-id="@item.Id">@localizer["Open"]</a> |
-                                    <a asp-action="edit" asp-controller="home" asp-route-id="@item.Id">@localizer["Update"]</a> |
-                                    <a asp-action="delete" asp-controller="home" asp-route-id="@item.Id">@localizer["Delete"]</a>
-                                </td>
-                            </tr>
-
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <p>Number of tasks created: @ViewBag.UserResult </p>
-            <P>Number of tasks solved: @ViewBag.UserAnswerResult </P>
-        </div>
-    </div>
+<a class="btn btn-outline-primary" role="button" asp-action="create" asp-controller="home">@localizer["add task"]</a>
+<form asp-action="acc" method="get">
+<div class="form-actions no-color">
+    <p>
+        @localizer["Find by name:"] <input type="text" name="searchstring" value="@ViewData["CurrentFilter"]" />
+        <input asp-controller="home" asp-action="acc" type="submit" value=@localizer["Search"] class="btn btn-default"  /> |
+        <a asp-controller="home" asp-action="acc">@localizer["Back to Full List"]</a>
+    </p>
 </div>
+</form>
+<h4>Number of tasks created: @ViewBag.UserResult </h4>
+<h4>Number of tasks solved: @ViewBag.UserAnswerResult </h4>
+<table class="table">
+    <thead>
+            <tr>
+                <th>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["NameSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Name)]</a>
+                </th>
+                <th>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ConditionSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Description)]</a>
+                </th>
+                <th>
+                    <a asp-controller="home" asp-action="acc" asp-route-sortorder="@ViewData["ThemeSortParm"]">@localizer[@Html.DisplayNameFor(model => model.Theme)]</a>
+                </th>
+                <th></th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+                @if (item.UserName == User.Identity.Name)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <markdown normalize-whitespace="true">@Html.DisplayFor(modelItem => item.Description)</markdown>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Theme)
+                        </td>
 
+                        <td>
+                            <a asp-action="details" asp-controller="home" asp-route-id="@item.Id">@localizer["Open"]</a> |
+                            <a asp-action="edit" asp-controller="home" asp-route-id="@item.Id">@localizer["Update"]</a> |
+                            <a asp-action="delete" asp-controller="home" asp-route-id="@item.Id">@localizer["Delete"]</a>
+                        </td>
+                    </tr>
+                    
+                }
+            }
+    </tbody>
+</table>
