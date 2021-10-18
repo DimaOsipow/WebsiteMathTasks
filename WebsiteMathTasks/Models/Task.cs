@@ -21,6 +21,7 @@ namespace WebsiteMathTasks.Models
         public string Answer { get; set; }
         public string SecondAnswer{ get; set; }
         public string ThirdAnswer { get; set; }
+        public string DataTime { get; set; }
         public List<UserAnswerModel> UserAnswerModels { get; set; } = new List<UserAnswerModel>();
         public List<IndexViewModel> IndexViewModels { get; set; } = new List<IndexViewModel>();
 
