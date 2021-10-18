@@ -6,9 +6,9 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            @localizer["Find by name:"] <input type="text" name="searchstring" value="@ViewData["CurrentFilter"]" />
-            <input asp-controller="home" asp-action="Index" type="submit" value=@localizer["Search"] class="btn btn-default" /> |
-            <a asp-controller="home" asp-action="Index">@localizer["Back to Full List"]</a>
+            @localizer["Find by name:"] <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value=@localizer["Search"] class="btn btn-default" /> |
+            <a asp-action="Index">@localizer["Back to Full List"]</a>
         </p>
     </div>
 </form>
@@ -16,15 +16,13 @@
 
     @foreach (var item in Model)
     {
-        <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">@localizer["Open"]</a>
-                </td>
-            </tr>
-        </tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">@localizer["Open"]</a>
+            </td>
+        </tr>
     }
 </table>

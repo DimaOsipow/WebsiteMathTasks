@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authentication;
 
 namespace WebsiteMathTasks.Controllers
 {
     [Authorize]
-    [ViewComponent]
     public class HomeController : Controller
     {
         
@@ -46,7 +46,7 @@ namespace WebsiteMathTasks.Controllers
         public async Task <IActionResult> Acc(string sortorder, string searchstring)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortorder) ? "name_desc" : "";
-            ViewData["ConditionSortParm"] = sortorder == "description" ? "description_desc" : "description";
+            ViewData["ConditionSortParm"] = sortorder == "condition" ? "condition_desc" : "condition";
             ViewData["ThemeSortParm"] = sortorder == "theme" ? "theme_desc" : "theme";
             ViewData["CurrentFilter"] = searchstring;
 
@@ -56,9 +56,7 @@ namespace WebsiteMathTasks.Controllers
             if (!String.IsNullOrEmpty(searchstring))
             {
                 tasks = tasks.Where(s => s.Name.Contains(searchstring)
-                                       || s.Description.Contains(searchstring)
-                                       || s.Theme.Contains(searchstring)
-                                       || s.Tag.Contains(searchstring));
+                                       || s.Theme.Contains(searchstring));
             }
             switch (sortorder)
             {
@@ -103,7 +101,6 @@ namespace WebsiteMathTasks.Controllers
             {
                 task.Theme = selectedItem;
                 task.UserName = User.Identity.Name;
-                task.DataTime = DateTime.Now.ToString("HH:mm:ss");
 
                 _context.Tasks.Add(task);
 
@@ -251,25 +248,9 @@ namespace WebsiteMathTasks.Controllers
             return NotFound();
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string searchstring)
+        public async Task<IActionResult> Index()
         {
-
-            ViewData["CurrentFilter"] = searchstring;
-
-            var tasks = from s in _context.Tasks
-                        select s;
-
-            if (!String.IsNullOrEmpty(searchstring))
-            {
-                tasks = tasks.Where(s => s.Name.Contains(searchstring)
-                                       || s.Description.Contains(searchstring)
-                                       || s.Theme.Contains(searchstring)
-                                       || s.Tag.Contains(searchstring));
-            }
-
-            tasks = tasks.OrderByDescending(s => s.DataTime);
-
-            return View(await tasks.AsNoTracking().ToListAsync());
+            return View(await _context.Tasks.ToListAsync());
         }
         [Authorize(Roles = "admin")]
         public IActionResult Admin()
